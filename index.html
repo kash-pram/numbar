@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>numbAr</title>
+    <script>
+        function findNumbAr () {
+            let tableElem = document.getElementById("tblNumbAr");
+            for(let i=0;i<10;i++){
+                for(let j=0;j<10;j++){
+                    for(let k=0;k<10;k++){
+                        for(let w=0;w<10;w++){
+                            // if (singleSum(numbAr[0] + '' + numbAr[0] + '' + numbAr[0] + '' + numbAr[w]))
+                            if ( 
+                                // i == 3 && 
+                                i!=4 && i!=8 && i!= 5 && i!=6 && i!=7 && 
+                                j!=4 && j!=8 && j!= 5 && j!=6 && j!=7 && 
+                                k!=4 && k!=8 && k!= 5 && k!=6 && k!=7 && 
+                                w!=4 && w!=8 && w!= 5 && w!=6 && w!=7 && 
+                                 getSum(i + '' + j + '' + k + '' + w) === 3) {
+console.log(i, j, k, w);
+                                tableElem += "";
+                                // console.log(getSum(i + '' + j + '' + k + '' + w));
+                            } // IF
+                        } // FOR
+                    }
+                }
+            }
+        } // FN
+
+        // function singleSum(dvalue){
+
+        //     if(dvalue.length === 1) {
+        //         return dvalue;
+        //     }
+
+        //     dvalue=dvalue.toString();
+        //     let svalue=0;
+
+        //     for(let i=0;i<dvalue.length;i++) {
+        //         svalue=parseInt(svalue)+parseInt(dvalue[i]);
+        //     }
+        //     svalue = svalue + '';
+
+        //     if ( svalue.length > 1) {
+        //         singleSum(svalue);
+        //     }
+
+        //     return parseInt(svalue);
+        // } // FN
+
+        function getSum(n) {
+            let sum = 0;
+            let inpValue = parseInt(n);
+            while (n > 0 || sum > 9) {
+                if(n == 0) {
+                    n = sum;
+                    sum = 0;
+                }
+                sum = sum + n % 10;
+                n = Math.floor(n / 10);
+            }
+            return sum;
+        } // FN
+
+        findNumbAr();
+    </script>
+</head>
+<body>
+    NumbAr
+    <table id="tblNumbAr"></table>
+</body>
+</html>
