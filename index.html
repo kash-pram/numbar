@@ -5,9 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>numbAr</title>
+    <style>
+        li{
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <ul id="listNumbAr"></ul>
     <script>
         function findNumbAr () {
-            let tableElem = document.getElementById("tblNumbAr");
+            let listElem = document.getElementById("listNumbAr");
             for(let i=0;i<10;i++){
                 for(let j=0;j<10;j++){
                     for(let k=0;k<10;k++){
@@ -21,13 +30,17 @@
                                 w!=4 && w!=8 && w!= 5 && w!=6 && w!=7 && 
                                  getSum(i + '' + j + '' + k + '' + w) === 3) {
 console.log(i, j, k, w);
-                                tableElem += "";
+                                var li = document.createElement("li");
+                                li.appendChild(document.createTextNode(" " + i + " " + j + " " + k + " " + w + " "));
+                                listElem.appendChild(li);
+                                // listElem += "<li>" + i + " " + j + " " + k + " " + w + "</li>";
                                 // console.log(getSum(i + '' + j + '' + k + '' + w));
                             } // IF
                         } // FOR
                     }
                 }
             }
+
         } // FN
 
         // function singleSum(dvalue){
@@ -67,9 +80,5 @@ console.log(i, j, k, w);
 
         findNumbAr();
     </script>
-</head>
-<body>
-    NumbAr
-    <table id="tblNumbAr"></table>
 </body>
 </html>
