@@ -9,11 +9,47 @@
         li{
             padding: 10px;
         }
+
+        input{
+            margin: 50px;
+            margin-right: 10px;
+        }
+        /* label{
+            padding-left: 10px;
+        } */
+        label:hover{
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
     <ul id="listNumbAr"></ul>
     <script>
+        function findNumbAr3 () {
+            let container = document.getElementById("listNumbAr");
+            for(let i=0;i<10;i++){
+                for(let j=0;j<10;j++){
+                    for(let w=0;w<10;w++){
+                        var checkbox = document.createElement('input');
+                        checkbox.type = "checkbox";
+                        // checkbox.name = "name";
+                        // checkbox.value = "false";
+                        checkbox.id = "id_" +  i + "_" + j + "_" + w;
+
+                        var label = document.createElement('label')
+                        label.htmlFor = "id_" +  i + "_" + j + "_" + w;
+                        label.appendChild(document.createTextNode(i + " " + j + " " + w));
+
+                        container.appendChild(checkbox);
+                        container.appendChild(label);
+                        // container.appendChild(document.createElement('br'));
+                        // container.appendChild(document.createElement('br'));
+                    } // FOR
+                }
+            }
+
+        } // FN
+
         function findNumbAr () {
             let listElem = document.getElementById("listNumbAr");
             for(let i=0;i<10;i++){
@@ -81,7 +117,7 @@ console.log(i, j, k, w);
             return sum;
         } // FN
 
-        findNumbAr();
+        findNumbAr3();
     </script>
 </body>
 </html>
