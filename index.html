@@ -482,7 +482,7 @@
                 }
 
                 const minDigit = constraintObj.allowZero ? 0 : (current.length === 0 ? 1 : 0);
-                const maxDigit = 9;
+                const maxDigit = 5;
 
                 for (let digit = minDigit; digit <= maxDigit; digit++) {
                     if (constraintObj.uniqueDigits && current.includes(digit)) continue;
@@ -505,8 +505,8 @@
             const numDigits = parseInt(document.getElementById('numDigits').value);
             const targetDigitalRoot = parseInt(document.getElementById('targetSum').value);
             
-            if (!numDigits || !targetDigitalRoot || numDigits < 1 || numDigits > 10 || targetDigitalRoot < 1 || targetDigitalRoot > 9) {
-                showError('Please enter valid values for number of digits (1-10) and single digit sum (1-9).');
+            if (!numDigits || !targetDigitalRoot || numDigits < 1 || numDigits > 6 || targetDigitalRoot < 1 || targetDigitalRoot > 9) {
+                showError('Please enter valid values for number of digits (1-6) and single digit sum (1-9).');
                 return;
             }
 
