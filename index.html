@@ -2,122 +2,709 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>numbAr</title>
+    <title>Lucky Number Generator</title>
     <style>
-        li{
-            padding: 10px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        input{
-            margin: 50px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .form-group h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group h3::before {
+            content: "⚙️";
             margin-right: 10px;
         }
-        /* label{
-            padding-left: 10px;
-        } */
-        label:hover{
-            cursor:pointer;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #495057;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4);
+        }
+
+        .results-section {
+            padding: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-count {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-filter input {
+            width: 200px;
+            margin: 0;
+        }
+
+        .search-filter select {
+            width: 150px;
+            margin: 0;
+        }
+
+        .results-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        th:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        th.sortable::after {
+            content: "↕️";
+            position: absolute;
+            right: 10px;
+            opacity: 0.5;
+        }
+
+        th.sort-asc::after {
+            content: "↑";
+            opacity: 1;
+        }
+
+        th.sort-desc::after {
+            content: "↓";
+            opacity: 1;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .number-cell {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #495057;
+        }
+
+        .sum-cell {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            font-size: 1.2em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-filter {
+                justify-content: center;
+            }
+            
+            .search-filter input, .search-filter select {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <ul id="listNumbAr"></ul>
+    <div class="container">
+        <div class="header">
+            <h1>🔢 Lucky Number Generator</h1>
+            <p>
+                <!-- Generate permutations and combinations of digits with custom constraints -->
+                (credits to Claude.ai)
+            </p>
+        </div>
+
+        <div class="controls">
+            <div class="form-grid">
+                <div class="form-group">
+                    <h3>Basic Parameters</h3>
+                    <label for="numDigits">Number of Digits (n):</label>
+                    <input type="number" id="numDigits" min="1" max="10" value="3">
+                    
+                    <label for="targetSum">Single Digit Sum (1-9):</label>
+                    <input type="number" id="targetSum" min="1" max="9" value="9">
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="allowZero">
+                        <label for="allowZero">Allow leading zeros</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="uniqueDigits">
+                        <label for="uniqueDigits">Use unique digits only</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h3>Position Constraints</h3>
+                    <label for="firstDigit">First Digit (optional):</label>
+                    <input type="number" id="firstDigit" min="0" max="9" placeholder="Leave empty for any">
+                    
+                    <label for="lastDigit">Last Digit (optional):</label>
+                    <input type="number" id="lastDigit" min="0" max="9" placeholder="Leave empty for any">
+                </div>
+
+                <div class="form-group">
+                    <h3>Pattern Matching</h3>
+                    <label for="startPattern">Starting Pattern (optional):</label>
+                    <input type="text" id="startPattern" placeholder="e.g., 12 for numbers starting with 12">
+                    
+                    <label for="endPattern">Ending Pattern (optional):</label>
+                    <input type="text" id="endPattern" placeholder="e.g., 34 for numbers ending with 34">
+                    
+                    <label for="containsPattern">Contains Pattern (optional):</label>
+                    <input type="text" id="containsPattern" placeholder="e.g., 567 for numbers containing 567">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-generate" onclick="generateNumbers()">🚀 Generate Numbers</button>
+                <button class="btn-clear" onclick="clearAll()">🗑️ Clear All</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-count" id="resultsCount">No results yet</div>
+                <div class="search-filter">
+                    <input type="text" id="searchInput" placeholder="Search results..." onkeyup="filterResults()">
+                    <!-- <select id="sortBy" onchange="sortResults()">
+                        <option value="">Sort by...</option>
+                        <option value="number">Number</option>
+                        <option value="digitalRoot">Digital Root</option>
+                    </select> -->
+                </div>
+            </div>
+
+            <div id="resultsContainer">
+                <div class="no-results">
+                    <h3>🎯 Ready to Generate</h3>
+                    <p>Configure your parameters above and click "Generate Numbers" to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function findNumbAr3 () {
-            let container = document.getElementById("listNumbAr");
-            for(let i=0;i<10;i++){
-                for(let j=0;j<10;j++){
-                    for(let w=0;w<10;w++){
-                        var checkbox = document.createElement('input');
-                        checkbox.type = "checkbox";
-                        // checkbox.name = "name";
-                        // checkbox.value = "false";
-                        checkbox.id = "id_" +  i + "_" + j + "_" + w;
+        // Global variables
+        let allResults = [];
+        let filteredResults = [];
+        let currentSort = { field: '', direction: '' };
 
-                        var label = document.createElement('label')
-                        label.htmlFor = "id_" +  i + "_" + j + "_" + w;
-                        label.appendChild(document.createTextNode(i + " " + j + " " + w));
+        // Calculate digital root (recursive sum to single digit)
+        function calculateDigitalRoot(num) {
+            while (num >= 10) {
+                num = num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+            return num;
+        }
 
-                        container.appendChild(checkbox);
-                        container.appendChild(label);
-                        // container.appendChild(document.createElement('br'));
-                        // container.appendChild(document.createElement('br'));
-                    } // FOR
+        // Check if number meets pattern constraints
+        function meetsConstraints(number, constraintObj) {
+            if (constraintObj.startPattern && !number.startsWith(constraintObj.startPattern)) {
+                return false;
+            }
+            
+            if (constraintObj.endPattern && !number.endsWith(constraintObj.endPattern)) {
+                return false;
+            }
+            
+            if (constraintObj.containsPattern && !number.includes(constraintObj.containsPattern)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Validate input constraints
+        function validateConstraints(numDigits, targetDigitalRoot, constraintObj) {
+            if (targetDigitalRoot < 1 || targetDigitalRoot > 9) {
+                return {
+                    valid: false,
+                    message: 'Single digit sum must be between 1 and 9.'
+                };
+            }
+
+            if (constraintObj.uniqueDigits) {
+                const availableDigits = constraintObj.allowZero ? 10 : 9;
+                
+                if (numDigits > availableDigits) {
+                    return {
+                        valid: false,
+                        message: `Cannot create ${numDigits} unique digits. Maximum available: ${availableDigits}`
+                    };
                 }
             }
 
-        } // FN
+            return { valid: true };
+        }
 
-        function findNumbAr () {
-            let listElem = document.getElementById("listNumbAr");
-            for(let i=0;i<10;i++){
-                for(let j=0;j<10;j++){
-                    for(let k=0;k<10;k++){
-                        for(let w=0;w<10;w++){
-                            // if (singleSum(numbAr[0] + '' + numbAr[0] + '' + numbAr[0] + '' + numbAr[w]))
-                            if ( 
-                                i == 3 && 
-                                // i!=4 && 
-                                // i!=8 && i!= 5 && i!=6 && i!=7 && 
-                                // j!=4 && 
-                                j!=8 && j!= 5 && j!=6 && j!=7 && 
-                                // k!=4 && 
-                                k!=8 && k!= 5 && k!=6 && k!=7 && 
-                                // w!=4 && 
-                                w!=8 && w!= 5 && w!=6 && w!=7 && 
-                                 getSum(i + '' + j + '' + k + '' + w) === 3) {
-console.log(i, j, k, w);
-                                var li = document.createElement("li");
-                                li.appendChild(document.createTextNode(" " + i + " " + j + " " + k + " " + w + " "));
-                                listElem.appendChild(li);
-                                // listElem += "<li>" + i + " " + j + " " + k + " " + w + "</li>";
-                                // console.log(getSum(i + '' + j + '' + k + '' + w));
-                            } // IF
-                        } // FOR
+        // Generate all digit combinations with target digital root
+        function generateDigitCombinations(n, targetDigitalRoot, constraintObj) {
+            const results = [];
+            
+            function backtrack(current, remaining) {
+                if (remaining === 0) {
+                    const number = current.join('');
+                    const digitalRoot = calculateDigitalRoot(parseInt(number));
+                    
+                    if (digitalRoot === targetDigitalRoot && meetsConstraints(number, constraintObj)) {
+                        const actualSum = current.reduce((sum, digit) => sum + digit, 0);
+                        results.push({
+                            number: number,
+                            digits: [...current],
+                            sum: actualSum,
+                            digitalRoot: digitalRoot
+                        });
                     }
+                    return;
+                }
+
+                const minDigit = constraintObj.allowZero ? 0 : (current.length === 0 ? 1 : 0);
+                const maxDigit = 9;
+
+                for (let digit = minDigit; digit <= maxDigit; digit++) {
+                    if (constraintObj.uniqueDigits && current.includes(digit)) continue;
+                    
+                    if (current.length === 0 && constraintObj.firstDigit !== null && digit !== constraintObj.firstDigit) continue;
+                    if (remaining === 1 && constraintObj.lastDigit !== null && digit !== constraintObj.lastDigit) continue;
+
+                    current.push(digit);
+                    backtrack(current, remaining - 1);
+                    current.pop();
                 }
             }
 
-        } // FN
+            backtrack([], n);
+            return results;
+        }
 
-        // function singleSum(dvalue){
-
-        //     if(dvalue.length === 1) {
-        //         return dvalue;
-        //     }
-
-        //     dvalue=dvalue.toString();
-        //     let svalue=0;
-
-        //     for(let i=0;i<dvalue.length;i++) {
-        //         svalue=parseInt(svalue)+parseInt(dvalue[i]);
-        //     }
-        //     svalue = svalue + '';
-
-        //     if ( svalue.length > 1) {
-        //         singleSum(svalue);
-        //     }
-
-        //     return parseInt(svalue);
-        // } // FN
-
-        function getSum(n) {
-            let sum = 0;
-            let inpValue = parseInt(n);
-            while (n > 0 || sum > 9) {
-                if(n == 0) {
-                    n = sum;
-                    sum = 0;
-                }
-                sum = sum + n % 10;
-                n = Math.floor(n / 10);
+        // Main function to generate numbers
+        function generateNumbers() {
+            const numDigits = parseInt(document.getElementById('numDigits').value);
+            const targetDigitalRoot = parseInt(document.getElementById('targetSum').value);
+            
+            if (!numDigits || !targetDigitalRoot || numDigits < 1 || numDigits > 10 || targetDigitalRoot < 1 || targetDigitalRoot > 9) {
+                showError('Please enter valid values for number of digits (1-10) and single digit sum (1-9).');
+                return;
             }
-            return sum;
-        } // FN
 
-        findNumbAr3();
+            const userConstraints = {
+                allowZero: document.getElementById('allowZero').checked,
+                uniqueDigits: document.getElementById('uniqueDigits').checked,
+                firstDigit: document.getElementById('firstDigit').value ? parseInt(document.getElementById('firstDigit').value) : null,
+                lastDigit: document.getElementById('lastDigit').value ? parseInt(document.getElementById('lastDigit').value) : null,
+                startPattern: document.getElementById('startPattern').value.trim(),
+                endPattern: document.getElementById('endPattern').value.trim(),
+                containsPattern: document.getElementById('containsPattern').value.trim()
+            };
+
+            const validation = validateConstraints(numDigits, targetDigitalRoot, userConstraints);
+            if (!validation.valid) {
+                showError(validation.message);
+                return;
+            }
+
+            showLoading();
+
+            setTimeout(() => {
+                try {
+                    allResults = generateDigitCombinations(numDigits, targetDigitalRoot, userConstraints);
+                    filteredResults = [...allResults];
+                    displayResults();
+                } catch (error) {
+                    showError('An error occurred while generating numbers. Please check your parameters.');
+                    console.error(error);
+                }
+            }, 100);
+        }
+
+        // Show loading state
+        function showLoading() {
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>Generating numbers...</div>
+                </div>
+            `;
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
+
+        // Display results in table
+        function displayResults() {
+            const container = document.getElementById('resultsContainer');
+            const countElement = document.getElementById('resultsCount');
+            
+            countElement.textContent = `Found ${filteredResults.length} results`;
+
+            if (filteredResults.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>🔍 No Results Found</h3>
+                        <p>Try adjusting your parameters to get some results.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let tableHTML = `
+                <div class="results-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortTable('number')">
+                                    Number ${getSortIcon('number')}
+                                </th>
+                                <th class="sortable" onclick="sortTable('digitalRoot')">
+                                    Single Digit Sum ${getSortIcon('digitalRoot')}
+                                </th>
+                                <th>Digit Breakdown</th>
+                                <th>Length</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            filteredResults.forEach(result => {
+                tableHTML += `
+                    <tr>
+                        <td class="number-cell">${result.number}</td>
+                        <td class="sum-cell">${result.digitalRoot}</td>
+                        <td>${result.digits.join(' + ')} = ${result.sum} → ${result.digitalRoot}</td>
+                        <td>${result.digits.length}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        // Get sort icon for column headers
+        function getSortIcon(field) {
+            if (currentSort.field === field) {
+                return currentSort.direction === 'asc' ? '↑' : '↓';
+            }
+            return '↕️';
+        }
+
+        // Sort table by field
+        function sortTable(field) {
+            if (currentSort.field === field) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.field = field;
+                currentSort.direction = 'asc';
+            }
+
+            filteredResults.sort((a, b) => {
+                let aVal = a[field];
+                let bVal = b[field];
+
+                if (field === 'number') {
+                    aVal = parseInt(aVal);
+                    bVal = parseInt(bVal);
+                }
+
+                if (currentSort.direction === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            displayResults();
+        }
+
+        // Sort results from dropdown
+        function sortResults() {
+            const sortBy = document.getElementById('sortBy').value;
+            if (sortBy) {
+                sortTable(sortBy);
+            }
+        }
+
+        // Filter results based on search
+        function filterResults() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                filteredResults = [...allResults];
+            } else {
+                filteredResults = allResults.filter(result => 
+                    result.number.includes(searchTerm) ||
+                    result.digitalRoot.toString().includes(searchTerm)
+                );
+            }
+            
+            displayResults();
+        }
+
+        // Clear all inputs and results
+        function clearAll() {
+            document.getElementById('numDigits').value = '3';
+            document.getElementById('targetSum').value = '9';
+            document.getElementById('allowZero').checked = false;
+            document.getElementById('uniqueDigits').checked = false;
+            document.getElementById('firstDigit').value = '';
+            document.getElementById('lastDigit').value = '';
+            document.getElementById('startPattern').value = '';
+            document.getElementById('endPattern').value = '';
+            document.getElementById('containsPattern').value = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('sortBy').value = '';
+            
+            allResults = [];
+            filteredResults = [];
+            currentSort = { field: '', direction: '' };
+            
+            document.getElementById('resultsCount').textContent = 'No results yet';
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="no-results">
+                    <h3>🎯 Ready to Generate</h3>
+                    <p>Configure your parameters above and click "Generate Numbers" to see results.</p>
+                </div>
+            `;
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            console.log('Digit Pattern Generator loaded successfully!');
+        });
     </script>
 </body>
 </html>
